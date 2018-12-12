@@ -10,35 +10,33 @@ public class SearchResultPage {
 
 
     @FindBy(xpath = "//a[text()='Не показывать варианты проживания в одном номере с другими гостями']")
-    private WebElement noticeNoDorms;
+    private WebElement linkFilterNoticeNoDorms;
     @FindBy(xpath = "//a[@data-id='ht_id-204']")
     private WebElement filterHotel;
     @FindBy(xpath = "//a[text()='Показать только отели']")
     private WebElement filterOnlyHotel;
-    @FindBy(xpath = "//a[@data-id='oos-1']")
+    @FindBy(xpath = "//div[@id='filter_out_of_stock']//a[@data-id='oos-1']")
     private WebElement filterOnlyAvailableHotel;
     @FindBy(xpath = "//a[@data-name='any_deal']")
-    private WebElement filterAnyDeal1;
-    @FindBy(xpath = "//a[@data-id='hotelfacility-2'and @data-name='hotelfacility']")
+    private WebElement filterTodayAnyDeal1;
+    @FindBy(xpath = "//div[@id='filter_roomfacilities']//div[contains(@class,'collapsed_partly_more')]")
     private WebElement linkFilterFacilityCollapsed;
-    @FindBy(xpath = "//*[@id='filter_facilities']//div[@class='collapsed_partly_link collapsed_partly_more']")
+    @FindBy(xpath = "//*[contains(text(),'Парковка')]")
     private WebElement filterFacilityParking;
-    @FindBy(xpath = "//a[@data-id='fc-5']")
-    private WebElement filterFacilityOrderWithoutPrepaiment;
+    @FindBy(xpath = "//div[@id='filter_fc']//a[@data-id='fc-5']")
+    private WebElement filterFacilityOrderWithoutPrepayment;
     @FindBy(xpath = "//a[text()='Показать только отели']")
     private WebElement linkFilterOnlyHotels;
     @FindBy(xpath = "//div[@class='sr_header--title']/div/*[1]")
     private WebElement resultsText;
     @FindBy(xpath = "//a[@data-name='oos']")
     private WebElement onlyAvailableOptions;
-    @FindBy(xpath = "//div[@id='hotellist_inner']/div[1]//span[@class='sr_hotel_expectation__text']")
-    private WebElement srHotelExpectationText;
     @FindBy(xpath = "//div[@id='hotellist_inner']/div//span[@class='sr_hotel_expectation__text']")
-    private WebElement srHotelExpectationTextAll;
+    private WebElement satisfiedAll;
     @FindBy(xpath = "//div[@id='hotellist_inner']/div//span[@class='sr_hotel_expectation__text']/../../..//span[@class='room_link']")
-    private WebElement srHotelExpectationTextRoom;
+    private WebElement strRoomsName;
     @FindBy(xpath = "//*[@class='sort_option_list']//a[@data-category='price']")
-    private WebElement filterPrice;
+    private WebElement filterRankPrice;
     @FindBy(xpath = "//*[@class='sort_option_list']//a[@data-category='review_score_and_price']")
     private WebElement filterScoreAndPrice;
     @FindBy(xpath = "//*[@id='filter_review']//span[contains(text(),'Превосходно')]")
@@ -49,8 +47,8 @@ public class SearchResultPage {
     private WebElement buiReviewScoreTitle;
 
 
-    public void clickFromNoticeNoDorms() {
-        noticeNoDorms.click();
+    public void clickLinkFilterNoticeNoDorms() {
+        linkFilterNoticeNoDorms.click();
     }
 
     public void setFilterHotel() {
@@ -65,8 +63,8 @@ public class SearchResultPage {
         filterOnlyAvailableHotel.click();
     }
 
-    public void setFilterAnyDeal1() {
-        filterAnyDeal1.click();
+    public void setFilterTodayAnyDeal1() {
+        filterTodayAnyDeal1.click();
     }
 
     public void setFilterFacilityParking() {
@@ -77,12 +75,8 @@ public class SearchResultPage {
         linkFilterFacilityCollapsed.click();
     }
 
-    public void setFilterFacilityFood() {
-        filterFacilityOrderWithoutPrepaiment.click();
-    }
-
     public void setFilterFacilityOrderWithoutPrepaiment() {
-        filterFacilityOrderWithoutPrepaiment.click();
+        filterFacilityOrderWithoutPrepayment.click();
     }
 
 
@@ -90,11 +84,11 @@ public class SearchResultPage {
         onlyAvailableOptions.click();
     }
 
-    public void setFilterPrice() {
-        filterPrice.click();
+    public void setFilterRankPrice() {
+        filterRankPrice.click();
     }
 
-    public void setFilterScoreAndPrice() {
+    public void setFilterRankScoreAndPrice() {
         filterScoreAndPrice.click();
     }
 
@@ -107,42 +101,72 @@ public class SearchResultPage {
         return resultsText.getText();
     }
 
-    public String textSrHotelExpectationTextRoom() {
-          return srHotelExpectationTextRoom.getText();
+    public String textRoomsName() {
+        return strRoomsName.getText();
     }
 
     public String resultsPriceText() {
-              return bPrice.getText();
+        return bPrice.getText();
     }
 
     public String resultsBuiReviewScoreTitleText() {
-                    return buiReviewScoreTitle.getText();
+        return buiReviewScoreTitle.getText();
     }
 
     public boolean isAvailableLinkFilterOnlyHotels(){
+        isPresent(linkFilterOnlyHotels);
         return isPresent(linkFilterOnlyHotels);
     }
 
     public boolean isFilterOnlyAvailableHotel(){
+        isPresent(filterOnlyAvailableHotel);
         return isPresent(filterOnlyAvailableHotel);
     }
 
-    public boolean isAvailableNoticeNoDorms(){
-        return isPresent(noticeNoDorms);
+    public boolean isAvailableLinkFilterNoticeNoDorms(){
+        isPresent(linkFilterNoticeNoDorms);
+        return isPresent(linkFilterNoticeNoDorms);
     }
 
     public boolean isOnlyAvailableOptions(){
+        isPresent(onlyAvailableOptions);
         return isPresent(onlyAvailableOptions);
     }
 
-    public boolean isPresentSrHotelExpectationText(){
-        return isPresent(srHotelExpectationText);
+    public boolean isPresentSatisfiedAll() {
+        isPresent(satisfiedAll);
+        return isPresent(satisfiedAll);
     }
 
-    public boolean isPresentSrHotelExpectationTextAll() {
-        return isPresent(srHotelExpectationTextAll);
+    public boolean isPresentFilterRankScoreAndPrice() {
+        isPresent(filterScoreAndPrice);
+        return isPresent(filterScoreAndPrice);
     }
 
+    public boolean isFilterTodayAnyDeal1() {
+        isPresent(filterTodayAnyDeal1);
+        return isPresent(filterTodayAnyDeal1);
+    }
+
+    public boolean isFilterFacilityOrderWithoutPrepayment() {
+        isPresent(filterFacilityOrderWithoutPrepayment);
+        return isPresent(filterFacilityOrderWithoutPrepayment);
+    }
+
+    public boolean isFilterFacilityCollapsed() {
+        isPresent(linkFilterFacilityCollapsed);
+        return isPresent(linkFilterFacilityCollapsed);
+    }
+
+    public boolean isFilterFacilityParking() {
+        isPresent(filterFacilityParking);
+        return isPresent(filterFacilityParking);
+    }
+
+    public boolean isFilterExcellent() {
+        isPresent(filterExcellent);
+        return isPresent(filterExcellent);
+    }
 
     public boolean isPresent(WebElement webElement) {
         try {

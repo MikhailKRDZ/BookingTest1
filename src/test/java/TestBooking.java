@@ -43,8 +43,8 @@ public class TestBooking {
             }
         }
 
-        if (deviceName != null && !(deviceName=="")) {
-            if (width!=null && width!=0 && height!=null && height!=0) {
+        if (deviceName != null && !(deviceName == "")) {
+            if (width != null && width != 0 && height != null && height != 0) {
                 Dimension dimension = new Dimension(width, height);
                 driver.manage().window().setSize(dimension);
             }
@@ -56,7 +56,7 @@ public class TestBooking {
     public void start(@Optional String browserName,
                       @Optional String deviceName,
                       @Optional Integer width,
-                      @Optional Integer height){
+                      @Optional Integer height) {
 
         setUpBrowser(browserName, deviceName, width, height);
 
@@ -64,14 +64,14 @@ public class TestBooking {
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.manage().timeouts().setScriptTimeout(20, TimeUnit.SECONDS);
 
-                driver.get("https://www.booking.com/");
+        driver.get("https://www.booking.com/");
 
         mainPage = PageFactory.initElements(driver, MainPage.class);
         searchResultPage = PageFactory.initElements(driver, SearchResultPage.class);
     }
 
     @AfterMethod(alwaysRun = true)
-    public void finish(){
+    public void finish() {
         driver.quit();
     }
 
@@ -133,22 +133,19 @@ public class TestBooking {
             } while (children != thisСhildren);
         }
         mainPage.checkPriceButton();
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
         }
-
-        searchResultPage.setFilterHotel();
         if (searchResultPage.isFilterOnlyAvailableHotel()) {
             searchResultPage.setFilterOnlyAvailableHotel();
         }
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
-        }
-
+        searchResultPage.setFilterHotel();
         if (searchResultPage.isAvailableLinkFilterOnlyHotels()) {
             searchResultPage.setFilterOnlyHotel();
         }
-
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
+        }
         String results = searchResultPage.resultsText();
         int result = Integer.parseInt(results.replaceAll("\\D+", ""));
 
@@ -213,25 +210,23 @@ public class TestBooking {
             } while (children != thisСhildren);
         }
         mainPage.checkPriceButton();
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
-        }
-        searchResultPage.setFilterHotel();
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
         }
         if (searchResultPage.isFilterOnlyAvailableHotel()) {
             searchResultPage.setFilterOnlyAvailableHotel();
         }
+        searchResultPage.setFilterHotel();
         if (searchResultPage.isAvailableLinkFilterOnlyHotels()) {
             searchResultPage.setFilterOnlyHotel();
         }
-
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
+        }
         String results = searchResultPage.resultsText();
-
         int result = Integer.parseInt(results.replaceAll("\\D+", ""));
 
-        Assert.assertTrue(result > availableResult, " "+results+"; Search results Have found enough free Hotels room");
+        Assert.assertTrue(result > availableResult, " " + results + "; Search results Have found enough free Hotels room");
     }
 
     @Test(priority = 2, groups = {"canFind"})
@@ -296,24 +291,20 @@ public class TestBooking {
         mainPage.groupChildren2();
         mainPage.setGroupChildrenAge15();
         mainPage.checkPriceButton();
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
         }
-
-        searchResultPage.setFilterHotel();
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
-        }
-
         if (searchResultPage.isAvailableLinkFilterOnlyHotels()) {
             searchResultPage.setFilterOnlyHotel();
         }
-
+        searchResultPage.setFilterHotel();
         if (searchResultPage.isFilterOnlyAvailableHotel()) {
             searchResultPage.setFilterOnlyAvailableHotel();
         }
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
+        }
         String results = searchResultPage.resultsText();
-
         int result = Integer.parseInt(results.replaceAll("\\D+", ""));
 
         Assert.assertTrue(result > availableResult, "PlacesName Минск, Search results Have found enough free Hotels room");
@@ -374,92 +365,93 @@ public class TestBooking {
             } while (children != thisСhildren);
         }
         mainPage.checkPriceButton();
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
+        }
         if (searchResultPage.isOnlyAvailableOptions()) {
             searchResultPage.setFilterOnlyAvailableOptions();
         }
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
         }
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
-        }
+        Boolean resultFoundExpectationText = searchResultPage.isPresentSatisfiedAll();
 
-        Assert.assertTrue(searchResultPage.isPresentSrHotelExpectationText(), "Search results Have found room Max Quality with 100% satisfactions");
+        Assert.assertTrue(resultFoundExpectationText, "Search results Have found room Max Quality with 100% satisfactions");
     }
 
-          @Test(priority = 2, groups = {"canReach"})
-        public void canFindRoomsNearestMondayMaxQualityIsApartments() {
-              mainPage.inputPlace("Минск");
-              mainPage.placesNames();
-              mainPage.setNearestMonday();
-              mainPage.setNextDay();
-              mainPage.labelGuests();
-            if (mainPage.isPresentNoRooms()) {
-                mainPage.selectRooms();
-                mainPage.roomsValue();
-                mainPage.groupAdults();
-                mainPage.groupAdultsValue2();
-                mainPage.groupChildren();
-                mainPage.groupChildren0();
-            } else {
-                int room = 1;
-                int intRoomsValue = 0;
-                do {
-                    String roomsValue = mainPage.displayRooms();
-                    intRoomsValue = Integer.parseInt(roomsValue);
-                    if (room > intRoomsValue) {
-                        mainPage.roomsAddButton();
-                    }
-                    if (room < intRoomsValue) {
-                        mainPage.roomsSubtractButton();
-                    }
-                } while (room != intRoomsValue);
+    @Test(priority = 2, groups = {"canReach"})
+    public void canFindRoomsNearestMondayMaxQualityIsApartments() {
+        mainPage.inputPlace("Минск");
+        mainPage.placesNames();
+        mainPage.setNearestMonday();
+        mainPage.setNextDay();
+        mainPage.labelGuests();
+        if (mainPage.isPresentNoRooms()) {
+            mainPage.selectRooms();
+            mainPage.roomsValue();
+            mainPage.groupAdults();
+            mainPage.groupAdultsValue2();
+            mainPage.groupChildren();
+            mainPage.groupChildren0();
+        } else {
+            int room = 1;
+            int intRoomsValue = 0;
+            do {
+                String roomsValue = mainPage.displayRooms();
+                intRoomsValue = Integer.parseInt(roomsValue);
+                if (room > intRoomsValue) {
+                    mainPage.roomsAddButton();
+                }
+                if (room < intRoomsValue) {
+                    mainPage.roomsSubtractButton();
+                }
+            } while (room != intRoomsValue);
 
-                int adult = 2;
-                int thisAdult = 0;
-                do {
-                    String adultValue = mainPage.displayAdults();
-                    thisAdult = Integer.parseInt(adultValue);
-                    if (adult > thisAdult) {
-                        mainPage.adultsAddButton();
-                    }
-                    if (adult < thisAdult) {
-                        mainPage.adultsSubtractButton();
-                    }
-                } while (adult != thisAdult);
+            int adult = 2;
+            int thisAdult = 0;
+            do {
+                String adultValue = mainPage.displayAdults();
+                thisAdult = Integer.parseInt(adultValue);
+                if (adult > thisAdult) {
+                    mainPage.adultsAddButton();
+                }
+                if (adult < thisAdult) {
+                    mainPage.adultsSubtractButton();
+                }
+            } while (adult != thisAdult);
 
-                int children = 0;
-                int thisСhildren = 0;
-                do {
-                    String childrenValue = mainPage.displayChildren();
-                    thisСhildren = Integer.parseInt(childrenValue);
-                    if (children > thisСhildren) {
-                        mainPage.childrenAddButton();
-                    }
-                    if (children < thisСhildren) {
-                        mainPage.childrenSubtractButton();
-                    }
-                } while (children != thisСhildren);
-            }
-            mainPage.checkPriceButton();
-            if (searchResultPage.isOnlyAvailableOptions()) {
-                searchResultPage.setFilterOnlyAvailableOptions();
-            }
-            if (searchResultPage.isAvailableNoticeNoDorms()) {
-                searchResultPage.clickFromNoticeNoDorms();
-            }
-            if (searchResultPage.isAvailableNoticeNoDorms()) {
-                searchResultPage.clickFromNoticeNoDorms();
-            }
-              Boolean resultFindExpectationText = searchResultPage.isPresentSrHotelExpectationTextAll();
-              String roomName = "Апартаменты";
-              String textRoom = searchResultPage.textSrHotelExpectationTextRoom();
-
-              Assert.assertTrue(resultFindExpectationText, "Search results Have found room  with 100% satisfactions");
-
-              Assert.assertTrue( textRoom.contains(roomName),
-              "Search results Have found room  with 100% satisfactions and its apartments");
+            int children = 0;
+            int thisСhildren = 0;
+            do {
+                String childrenValue = mainPage.displayChildren();
+                thisСhildren = Integer.parseInt(childrenValue);
+                if (children > thisСhildren) {
+                    mainPage.childrenAddButton();
+                }
+                if (children < thisСhildren) {
+                    mainPage.childrenSubtractButton();
+                }
+            } while (children != thisСhildren);
         }
+        mainPage.checkPriceButton();
+        searchResultPage.setFilterRankScoreAndPrice();
+
+        if (searchResultPage.isOnlyAvailableOptions()) {
+            searchResultPage.setFilterOnlyAvailableOptions();
+        }
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
+        }
+        Boolean resultFoundExpectationText = searchResultPage.isPresentSatisfiedAll();
+        String roomsValue = searchResultPage.textRoomsName();
+        Boolean isApartments = roomsValue.contains("Апартаменты");
+
+        Assert.assertTrue(resultFoundExpectationText, "Have found room with label: This option met or exceed the expectations of 100% of guests who left a review.");
+
+        Assert.assertTrue(isApartments,"Rooms class is Apartments");
+
+        Assert.assertEquals(resultFoundExpectationText, isApartments, "Have found room with label: This option met or exceed the expectations of 100% of guests who left a review, name is Apartments");
+    }
 
     @Test(priority = 1, groups = {"canFind"})
     public void canFindHotelsCheapestRoomToday() {
@@ -517,26 +509,26 @@ public class TestBooking {
             } while (children != thisСhildren);
         }
         mainPage.checkPriceButton();
-        searchResultPage.setFilterPrice();
+        searchResultPage.setFilterRankPrice();
         searchResultPage.setFilterHotel();
         if (searchResultPage.isFilterOnlyAvailableHotel()) {
             searchResultPage.setFilterOnlyAvailableHotel();
         }
-        if (searchResultPage.isAvailableNoticeNoDorms()) {
-            searchResultPage.clickFromNoticeNoDorms();
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
         }
         if (searchResultPage.isAvailableLinkFilterOnlyHotels()) {
             searchResultPage.setFilterOnlyHotel();
         }
-
         String resultPriceText = searchResultPage.resultsPriceText();
         int resultPrice = Integer.parseInt(resultPriceText.replaceAll("\\D+", ""));
 
-        Assert.assertTrue(resultPrice < maxSetPrice, "PlacesName Минск, Search results less maxPrice");
+        Assert.assertTrue(resultPrice < maxSetPrice, "PlacesName Минск, Search results less maxSetPrice");
+
     }
 
     @Test(priority = 1, groups = {"canFind"})
-    public void canFindRoomBestQualityLowPriceToday(){
+    public void canFindRoomBestQualityLowPriceToday() {
 
         mainPage.inputPlace("Минск");
         mainPage.placesNames();
@@ -591,23 +583,40 @@ public class TestBooking {
             } while (children != thisСhildren);
         }
         mainPage.checkPriceButton();
-        searchResultPage.setFilterScoreAndPrice();  // не работает фильтр   добавить проверку ожидание!!!!
-
+        if (searchResultPage.isPresentFilterRankScoreAndPrice()) {
+            searchResultPage.setFilterRankScoreAndPrice();
+        }
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
+        }
         if (searchResultPage.isFilterOnlyAvailableHotel()) {
             searchResultPage.setFilterOnlyAvailableHotel();
         }
-        searchResultPage.setFilterAnyDeal1();
-        searchResultPage.setFilterFacilityOrderWithoutPrepaiment();
-        searchResultPage.clickFilterFacilityCollapsed();
-        searchResultPage.setFilterFacilityParking();
-        searchResultPage.setFilterFacilityFood();
-        searchResultPage.setFilterExcellent();
-
-
+        if (searchResultPage.isFilterTodayAnyDeal1()){
+            searchResultPage.setFilterTodayAnyDeal1();
+        }
+        if (searchResultPage.isFilterFacilityOrderWithoutPrepayment()) {
+            searchResultPage.setFilterFacilityOrderWithoutPrepaiment();
+        }
+        if (searchResultPage.isFilterFacilityCollapsed()){
+            searchResultPage.clickFilterFacilityCollapsed();
+        }
+        if (searchResultPage.isFilterFacilityParking()) {
+            searchResultPage.setFilterFacilityParking();
+        }
+        if (searchResultPage.isFilterExcellent()) {
+            searchResultPage.setFilterExcellent();
+        }
+        if (searchResultPage.isAvailableLinkFilterNoticeNoDorms()) {
+            searchResultPage.clickLinkFilterNoticeNoDorms();
+        }
         String resultsBuiReviewScoreTitleText = searchResultPage.resultsBuiReviewScoreTitleText();
 
-        Assert.assertEquals("Великолепно", resultsBuiReviewScoreTitleText, "Search result should contain 'Превосходно'");
+        Boolean isResultTitleTextContains = resultsBuiReviewScoreTitleText.contains("Великолепно") | resultsBuiReviewScoreTitleText.contains("Превосходно");
+
+        Assert.assertTrue(isResultTitleTextContains, "Search result should contain 'Превосходно или Великолепно'");
     }
+
     @DataProvider
     public Object[][] getPlacesName() {
         return new Object[][]{{"Минск"}, {"Витебск"}, {"Брест"}, {"Гродно"}, {"Гомель"}, {"Могилев"}};
