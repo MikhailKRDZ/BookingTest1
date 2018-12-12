@@ -600,7 +600,7 @@ public class TestBooking {
 
         String resultsBuiReviewScoreTitleText = searchResultPage.resultsBuiReviewScoreTitleText();
 
-        Assert.assertEquals("Великолепно", resultsBuiReviewScoreTitleText, "Search result should contain 'Превосходно'");
+        Assert.assertEquals("Великолепно", resultsBuiReviewScoreTitleText, "Search result should contain 'Великолепно'");
     }
 
     @DataProvider
